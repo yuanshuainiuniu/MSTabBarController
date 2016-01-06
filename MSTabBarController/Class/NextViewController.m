@@ -17,9 +17,9 @@
 {
     [super viewWillAppear:animated];
     
-    MSTabBarViewController * tabBar = (MSTabBarViewController *)self.tabBarController;
-    //自定义隐藏Tabbar
-    [tabBar HideTabarView:YES animated:YES];
+//    MSTabBarViewController * tabBar = (MSTabBarViewController *)self.tabBarController;
+//    //自定义隐藏Tabbar
+//    [tabBar HideTabarView:YES animated:YES];
     
     
 }

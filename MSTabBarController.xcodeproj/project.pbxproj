@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72542DB71C3D591A0083EA3C /* CustomerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72542DB61C3D591A0083EA3C /* CustomerNavigationController.m */; };
 		F32E070B1C3A5ABD0036A3A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E070A1C3A5ABD0036A3A3 /* main.m */; };
 		F32E070E1C3A5ABD0036A3A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E070D1C3A5ABD0036A3A3 /* AppDelegate.m */; };
 		F32E07111C3A5ABD0036A3A3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32E07101C3A5ABD0036A3A3 /* ViewController.m */; };
@@ -50,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		72542DB51C3D591A0083EA3C /* CustomerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerNavigationController.h; sourceTree = "<group>"; };
+		72542DB61C3D591A0083EA3C /* CustomerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerNavigationController.m; sourceTree = "<group>"; };
 		F32E07061C3A5ABD0036A3A3 /* MSTabBarController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MSTabBarController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F32E070A1C3A5ABD0036A3A3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F32E070C1C3A5ABD0036A3A3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -194,6 +197,8 @@
 				F32E07471C3A5ACF0036A3A3 /* ThreeViewController.m */,
 				F32E07481C3A5ACF0036A3A3 /* TwoViewController.h */,
 				F32E07491C3A5ACF0036A3A3 /* TwoViewController.m */,
+				72542DB51C3D591A0083EA3C /* CustomerNavigationController.h */,
+				72542DB61C3D591A0083EA3C /* CustomerNavigationController.m */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -363,6 +368,7 @@
 				F32E07111C3A5ABD0036A3A3 /* ViewController.m in Sources */,
 				F32E074C1C3A5ACF0036A3A3 /* NextViewController.m in Sources */,
 				F32E074B1C3A5ACF0036A3A3 /* MSTabBarViewController.m in Sources */,
+				72542DB71C3D591A0083EA3C /* CustomerNavigationController.m in Sources */,
 				F32E070E1C3A5ABD0036A3A3 /* AppDelegate.m in Sources */,
 				F32E070B1C3A5ABD0036A3A3 /* main.m in Sources */,
 				F32E074E1C3A5ACF0036A3A3 /* OneViewController.m in Sources */,
@@ -594,6 +600,7 @@
 				F32E07351C3A5ABD0036A3A3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F32E07361C3A5ABD0036A3A3 /* Build configuration list for PBXNativeTarget "MSTabBarControllerTests" */ = {
 			isa = XCConfigurationList;
@@ -602,6 +609,7 @@
 				F32E07381C3A5ABD0036A3A3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F32E07391C3A5ABD0036A3A3 /* Build configuration list for PBXNativeTarget "MSTabBarControllerUITests" */ = {
 			isa = XCConfigurationList;
@@ -610,6 +618,7 @@
 				F32E073B1C3A5ABD0036A3A3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

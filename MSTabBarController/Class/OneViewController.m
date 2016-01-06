@@ -20,10 +20,11 @@
     [super viewWillAppear:animated];
     
     MSTabBarViewController * tabBar = (MSTabBarViewController *)self.tabBarController;
-    //自定义隐藏Tabbar
-    [tabBar HideTabarView:NO animated:YES];
+//    //自定义隐藏Tabbar
+//    [tabBar HideTabarView:NO animated:YES];
     
     [tabBar setBadge:@"5" atIndex:2];
+    [self.tabBarItem setBadgeValue:@"3"];
     
 }
 
@@ -46,9 +47,9 @@
 {
     NextViewController * nextVC = [[NextViewController alloc]init];
     
-    MSTabBarViewController * tabBar = (MSTabBarViewController *)self.tabBarController;
-    //自定义隐藏Tabbar
-    [tabBar HideTabarView:YES animated:YES];
+//    MSTabBarViewController * tabBar = (MSTabBarViewController *)self.tabBarController;
+//    //自定义隐藏Tabbar
+//    [tabBar HideTabarView:YES animated:YES];
     
     [self.navigationController pushViewController:nextVC animated:YES];
     

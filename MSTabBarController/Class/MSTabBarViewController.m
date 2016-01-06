@@ -9,6 +9,7 @@
 #import "MSTabBarViewController.h"
 
 #import "JSBadgeView.h"
+#import "CustomerNavigationController.h"
 
 @interface MSTabBarViewController ()<UITabBarControllerDelegate>
 {
@@ -21,7 +22,7 @@
 /**
  *  背景图片
  */
-@property (nonatomic,strong) UIImageView * imageView;
+//@property (nonatomic,strong) UIImageView * imageView;
 /**
  *  标题
  */
@@ -52,7 +53,10 @@
      */
     [self creationCusTabBar];
     
+
+    
 }
+
 #pragma mark - === 创建控制器  ===
 - (void)loadControllers
 {
@@ -63,18 +67,28 @@
     twoVC.title = @"测试二";
     ThreeViewController * three = [[ThreeViewController alloc]init];
     three.title = @"测试三";
+    TwoViewController * four = [[TwoViewController alloc]init];
+    four.title = @"测试四";
+    ThreeViewController * five = [[ThreeViewController alloc]init];
+    five.title = @"测试五";
     
-    UINavigationController * nav1 = [[UINavigationController alloc]initWithRootViewController:oneVC];
+    CustomerNavigationController * nav1 = [[CustomerNavigationController alloc]initWithRootViewController:oneVC];
     [nav1.navigationBar setBarTintColor:[UIColor cyanColor]];
     
-    UINavigationController * nav2 = [[UINavigationController alloc]initWithRootViewController:twoVC];
+    CustomerNavigationController * nav2 = [[CustomerNavigationController alloc]initWithRootViewController:twoVC];
     [nav2.navigationBar setBarTintColor:[UIColor yellowColor]];
     
-    UINavigationController * nav3 = [[UINavigationController alloc]initWithRootViewController:three];
+    CustomerNavigationController * nav3 = [[CustomerNavigationController alloc]initWithRootViewController:three];
     [nav3.navigationBar setBarTintColor:[UIColor redColor]];
     
+    CustomerNavigationController * nav4 = [[CustomerNavigationController alloc]initWithRootViewController:four];
+    [nav4.navigationBar setBarTintColor:[UIColor blueColor]];
+    
+    CustomerNavigationController * nav5 = [[CustomerNavigationController alloc]initWithRootViewController:five];
+    [nav5.navigationBar setBarTintColor:[UIColor redColor]];
+    
     //添加控制器
-    self.viewControllers = @[nav1,nav2,nav3];
+    self.viewControllers = @[nav1,nav2,nav3,nav4,nav5];
     
     
     for (UIView * view in self.tabBar.subviews)
@@ -82,17 +96,18 @@
         [view removeFromSuperview];
     }
     //隐藏系统的
-    self.tabBar.hidden = YES;
-    _BackgroundView = [[UIView alloc]initWithFrame:self.tabBar.frame];
-    _BackgroundView.backgroundColor = ColorWithRGB(238, 238, 238, 1.0);
+//    self.tabBar.hidden = YES;
+    NSLog(@"-----%@",NSStringFromCGRect(self.tabBar.frame));
+    _BackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.tabBar.frame.size.width, self.tabBar.frame.size.height)];
+//    _BackgroundView.backgroundColor = ColorWithRGB(238, 238, 238, 1.0);
     
-    [self.view addSubview:_BackgroundView];
-
+//    [self.view addSubview:_BackgroundView];
+    [self.tabBar addSubview:_BackgroundView];
     
-    _imageView = [[UIImageView alloc]initWithFrame:_BackgroundView.bounds];
-    _imageView.image = [UIImage imageNamed:@"tab_background"];
-    _imageView.userInteractionEnabled = YES;
-    [_BackgroundView addSubview:_imageView];
+//    _imageView = [[UIImageView alloc]initWithFrame:_BackgroundView.bounds];
+//    _imageView.image = [UIImage imageNamed:@"tab_background"];
+//    _imageView.userInteractionEnabled = YES;
+//    [_BackgroundView addSubview:_imageView];
     /**
      *  保持transform
      */
@@ -104,8 +119,8 @@
 - (void)creationCusTabBar
 {
 
-    _titles = @[@"测试一",@"测试二",@"测试三"];
-    NSArray * norImages = @[@"tabbar_contacts",@"tabbar_discover",@"tabbar_mainframe"];
+    _titles = @[@"测试一",@"测试二",@"测试三",@"测试四",@"测试五"];
+    NSArray * norImages = @[@"tabbar_contacts",@"tabbar_discover",@"tabbar_mainframe",@"tabbar_mainframe",@"tabbar_mainframe"];
     //按钮宽度
     CGFloat width = ScreenWidth / _titles.count;
     
@@ -134,7 +149,7 @@
         btn.frame = CGRectMake(width*i, 0, width, _BackgroundView.frame.size.height);
         
         
-        [_imageView addSubview:btn];
+        [_BackgroundView addSubview:btn];
         if (i == 0) {
             [self TapBnt:btn];
         }
@@ -174,7 +189,7 @@
 }
 
 - (void)setBadge:(NSString *)badge atIndex:(NSInteger)index{
-    for (UIButton *buttonItem in self.imageView.subviews) {
+    for (UIButton *buttonItem in self.BackgroundView.subviews) {
         if (index == buttonItem.tag - 100) {
             for (UIView *sub in buttonItem.imageView.subviews) {
                 if ([sub isKindOfClass:[JSBadgeView class]]) {
@@ -261,7 +276,7 @@ static const CGFloat duration = 0.5;
     [label.layer addAnimation:opacityAnimation forKey:@"opacityLabelAnimation"];
 }
 - (void)playMoveIconAnimation:(UIImageView *)icon values:(NSArray *)values{
-    CAKeyframeAnimation *yPositionAnimation = [self createAnimationWithKeyPath:@"position.y" Values:values duration:duration/2];
+    CAKeyframeAnimation *yPositionAnimation = [self createAnimationWithKeyPath:@"position.y" Values:values duration:duration];
     [icon.layer addAnimation:yPositionAnimation forKey:@"yPositionAnimation"];
 }
 
