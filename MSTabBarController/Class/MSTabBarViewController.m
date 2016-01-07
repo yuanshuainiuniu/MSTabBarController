@@ -371,8 +371,16 @@ static const CGFloat titleHeight = 20;
     
     switch (self.animationType) {
         case Value1:{
-            UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-            UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+            /**
+             *  @author Marshal, 16-01-07 10:01:07
+             *
+             *  @brief 兼容ios7
+             */
+//            UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+//            UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+            UIView *fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;
+            UIView *toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;
+            
             [[transitionContext containerView] addSubview:fromView];
             [[transitionContext containerView] addSubview:toView];
             
