@@ -39,6 +39,11 @@
 
 @end
 
+typedef  NS_ENUM(NSUInteger, AnimationType){
+    Value1,
+    Value2,
+    Value3,
+};
 @interface ModalTransitionAnimation : NSObject<UIViewControllerAnimatedTransitioning>
-
+@property (nonatomic, assign) AnimationType animationType;
 @end

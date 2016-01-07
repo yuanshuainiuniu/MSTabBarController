@@ -172,15 +172,29 @@
     
     UIImageView *deSelectedImageView = self.selectedButton.imageView;
     UILabel *deSelectedLabel = self.selectedButton.titleLabel;
-    //0.playAnimation
-    [self playMoveIconAnimation:selectedImageView values:@[@(deSelectedImageView.center.y),@(deSelectedImageView.center.y+4.0)]];
-    [self playAnimationWithView:selectedLabel];
-    //1.deselectAnimation
-    [self playMoveIconAnimation:deSelectedImageView values:@[@(deSelectedImageView.center.y + 4.0),@(deSelectedImageView.center.y)]];
-    [self playDeselectLabelAnimation:deSelectedLabel];
+    
+    
+    if (sender.tag - 100 == 2) {
+        [self playMoveIconAnimation:selectedImageView values:@[@(deSelectedImageView.center.y),@(deSelectedImageView.center.y+8.0)]];
+        [self playAnimationWithView:selectedLabel];
+        
+    }
+    else{
+        if (sender.tag - 100 == 0 || sender.tag - 100 == 4) {
+            [self playTransitionAniamtions:selectedImageView];
+        }else{
+            [self playBounceAnimation:selectedImageView];
+        }
+        if (self.selectedIndex == 2) {
+            //1.deselectAnimation
+            [self playMoveIconAnimation:deSelectedImageView values:@[@(deSelectedImageView.center.y + 8.0),@(deSelectedImageView.center.y)]];
+            [self playDeselectLabelAnimation:deSelectedLabel];
+        }
+    }
+    
+    
+    
     self.selectedButton.selected = NO;
-    //2.selectedState
-    [self playMoveIconAnimation:selectedImageView values:@[@(selectedImageView.center.y + 8.0)]];
     sender.selected = YES;
     
     self.selectedIndex = sender.tag - 100;
@@ -253,6 +267,7 @@
 }
 
 static const CGFloat duration = 0.5;
+#pragma mark - 位移动画
 - (void)playAnimationWithView:(UILabel *)view{
     
     CAKeyframeAnimation *yPositionAnimation = [self createAnimationWithKeyPath:@"position.y" Values:@[@(view.center.y),@(view.center.y - 60.0)] duration:duration];
@@ -289,10 +304,28 @@ static const CGFloat duration = 0.5;
     animation.removedOnCompletion = NO;
     return animation;
 }
-
+#pragma mark - 缩放动画
+- (void)playBounceAnimation:(UIImageView *)icon{
+    CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    bounceAnimation.values = @[@1.0 ,@1.3, @0.9, @1.15, @0.95, @1.02, @1.0];
+    bounceAnimation.duration = .7;
+    bounceAnimation.calculationMode = kCAAnimationCubic;
+    [icon.layer addAnimation:bounceAnimation forKey:@"bounceAnimation"];
+}
+#pragma mark - 翻转动画
+- (void)playTransitionAniamtions:(UIImageView *)icon{
+    [UIView transitionWithView:icon duration:duration options:UIViewAnimationOptionTransitionFlipFromLeft animations:nil completion:nil];
+}
+#pragma mark - 转场动画
 - (id<UIViewControllerAnimatedTransitioning>)tabBarController:(UITabBarController *)tabBarController animationControllerForTransitionFromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC{
     if (self.animation == nil) {
         _animation = [[ModalTransitionAnimation alloc] init];
+    }
+    UIViewController *vc = [((UINavigationController *)toVC).viewControllers firstObject];
+    if ([vc isKindOfClass:[ThreeViewController class]]) {
+        _animation.animationType = Value1;
+    }else{
+        _animation.animationType = Value2;
     }
     return _animation;
 }
@@ -336,31 +369,69 @@ static const CGFloat titleHeight = 20;
 }
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
     
-    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    [[transitionContext containerView] addSubview:fromView];
-    [[transitionContext containerView] addSubview:toView];
+    switch (self.animationType) {
+        case Value1:{
+            UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+            UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+            [[transitionContext containerView] addSubview:fromView];
+            [[transitionContext containerView] addSubview:toView];
+            
+            CGFloat finalRadius = sqrt(pow(toView.frame.size.height, 2) + pow(toView.frame.size.width, 2));
+            
+            UIBezierPath *start = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(toView.center.x, toView.center.y, 0, 0)];
+            
+            UIBezierPath *final = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(toView.center.x - finalRadius, toView.center.y - finalRadius, finalRadius * 2, finalRadius * 2)];
+            
+            CAShapeLayer *maskLayer = [CAShapeLayer layer];
+            maskLayer.fillColor = [UIColor whiteColor].CGColor;
+            maskLayer.path = final.CGPath;
+            toView.layer.mask = maskLayer;
+            
+            CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
+            maskLayerAnimation.delegate = self;
+            maskLayerAnimation.fromValue = (__bridge id)(start.CGPath);
+            maskLayerAnimation.toValue = (__bridge id)((final.CGPath));
+            maskLayerAnimation.duration = [self transitionDuration:transitionContext];
+            maskLayerAnimation.delegate = self;
+            maskLayerAnimation.timingFunction = [CAMediaTimingFunction  functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            [maskLayerAnimation setValue:transitionContext forKey:@"transitionContext"];
+            [maskLayer addAnimation:maskLayerAnimation forKey:@"path"];
+        }
+            
+            break;
+        case Value2:{
+            UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+            CGRect finalFrame = [transitionContext finalFrameForViewController:toVC];
+            
+            
+            toVC.view.frame = CGRectOffset(finalFrame, 0, -finalFrame.size.height);
+            
+            UIView *containerView = [transitionContext containerView];
+            [containerView addSubview:toVC.view];
+            
+            
+            [UIView animateWithDuration:[self transitionDuration:transitionContext]
+                                  delay:0
+                 usingSpringWithDamping:0.7
+                  initialSpringVelocity:0
+                                options:UIViewAnimationOptionTransitionCrossDissolve
+                             animations:^{
+                                 toVC.view.frame = finalFrame;
+                             } completion:^(BOOL finished) {
+                                 [transitionContext completeTransition:YES];
+                             }];
+        }
+            
+            break;
+        case Value3:
+            
+            break;
+            
+        default:
+            break;
+    }
     
-    CGFloat finalRadius = sqrt(pow(toView.frame.size.height, 2) + pow(toView.frame.size.width, 2));
     
-    UIBezierPath *start = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(toView.center.x, toView.center.y, 0, 0)];
-    
-    UIBezierPath *final = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(toView.center.x - finalRadius, toView.center.y - finalRadius, finalRadius * 2, finalRadius * 2)];
-    
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.fillColor = [UIColor whiteColor].CGColor;
-    maskLayer.path = final.CGPath;
-    toView.layer.mask = maskLayer;
-    
-    CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
-    maskLayerAnimation.delegate = self;
-    maskLayerAnimation.fromValue = (__bridge id)(start.CGPath);
-    maskLayerAnimation.toValue = (__bridge id)((final.CGPath));
-    maskLayerAnimation.duration = [self transitionDuration:transitionContext];
-    maskLayerAnimation.delegate = self;
-    maskLayerAnimation.timingFunction = [CAMediaTimingFunction  functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [maskLayerAnimation setValue:transitionContext forKey:@"transitionContext"];
-    [maskLayer addAnimation:maskLayerAnimation forKey:@"path"];
     
     
     
