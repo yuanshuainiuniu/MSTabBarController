@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 # 名称 使用的时候pod search [name]
 s.name = "MSTabBarController"
 # 代码库的版本
-s.version = "0.0.1"
+s.version = "0.0.2"
 # 简介
 s.summary = "The easiest way to use pull-to-refresh with Swift2.0 program language."
 # 主页
@@ -15,7 +15,7 @@ s.author = { "yuanshuai" => "717999274@qq.com" }
 # 代码库最低支持的版本
 s.platform = :ios, "7.0"
 # 代码的Clone 地址 和 tag 版本
-s.source = { :git => "https://github.com/yuanshuainiuniu/MSTabBarController.git", :tag => "0.0.1" }
+s.source = { :git => "https://github.com/yuanshuainiuniu/MSTabBarController.git", :tag => "0.0.2" }
 # 如果使用pod 需要导入哪些资源
 s.source_files = "Classes", "Classes/*.{h,m}"
 # gits.resources = "XWSwiftRefreshT/Icon/xw_icon.bundle"
