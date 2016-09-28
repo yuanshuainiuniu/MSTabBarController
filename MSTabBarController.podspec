@@ -17,7 +17,7 @@ s.platform = :ios, "7.0"
 # 代码的Clone 地址 和 tag 版本
 s.source = { :git => "https://github.com/yuanshuainiuniu/MSTabBarController.git", :tag => "0.0.1" }
 # 如果使用pod 需要导入哪些资源
-s.source_files = "MSTabBarController/**/*.{h,m}"
+s.source_files = "Classes", "Classes/*.{h,m}"
 # gits.resources = "XWSwiftRefreshT/Icon/xw_icon.bundle"
 # 框架是否使用的ARC
 s.requires_arc = true
